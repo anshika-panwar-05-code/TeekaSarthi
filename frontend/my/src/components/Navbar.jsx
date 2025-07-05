@@ -31,7 +31,7 @@ const Navbar = ({ userName = "User", onTextSizeChange, currentSize = "base" }) =
           Dashboard
         </button>
         <button
-          onClick={() => navigate("/dashboard/register")}
+          onClick={() => navigate("/add-beneficiary")}
           className="text-sm font-medium text-gray-700 hover:text-blue-600"
         >
           Register Member
