@@ -1,134 +1,138 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+// HeroSection component with auto-swiping image functionality
+const HeroSection = () => {
+  const images = [
+    "https://blogs.worldbank.org/content/dam/sites/blogs/img/detail/mgr/vaccination.png",
+    "https://mmhrc.in/file/wp-content/uploads/2025/03/adult-vac.jpg",
+    "https://www.news-medical.net/images/news/ImageForNews_742021_16790110622034247.jpg",
+    "https://www.careinsurance.com/upload_master/media/posts/March2023/know-about-vaccines-and-diseases-they-prevent-medium.jpg",
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+        {/* Left Content */}
+        <div className="w-full md:w-1/2 text-left mb-10 md:mb-0">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-6 leading-tight">
+            Secure Every Child <br /> With Timely Vaccination
+          </h2>
+          <p className="text-lg text-gray-600 mb-6 max-w-md">
+            Track and manage child immunizations at Anganwadi centers with Teeka Sarthi — making vaccination simple, timely, and effective.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-yellow-500 text-xl">🛡️</span>
+              <span className="font-semibold text-blue-800">Best protection</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-yellow-500 text-xl">⭐</span>
+              <span className="font-semibold text-blue-800">Selected Vaccines</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Auto-Swiping Image */}
+        <div className="w-full md:w-1/2 flex justify-center">
+          <img
+            src={images[currentImageIndex]}
+            alt="Vaccination awareness"
+            className="w-full h-80 md:h-[28rem] object-cover rounded-lg shadow-lg transition-opacity duration-1000 ease-in-out"
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const faqData = {
-    All: [
-        {
-            question: "Where can my child be registered for child vaccination?",
-            answer:
-                "You can register your child at local health centers, Anganwadi centers, or through the official NHM digital platform.",
-        },
-        {
-            question: "I am Pregnant woman, how can I register for receiving the Tetanus vaccine?",
-            answer:
-                "Pregnant women can register at government health centers or via the NHM digital platform under maternal health programs.",
-        },
-        {
-            question: "Is there a mobile app that needs to be installed to register for vaccination?",
-            answer:
-                "Yes, there are official apps like the CoWIN app where registration can be done easily.",
-        },
-    ],
-    Registration: [
-        {
-            question: "Where can my child be registered for child vaccination?",
-            answer:
-                "You can register your child at local health centers, Anganwadi centers, or through the official NHM digital platform.",
-        },
-    ],
-    "Vaccination Schedule": [
-        {
-            question: "What is the recommended vaccination schedule for infants?",
-            answer:
-                "The recommended vaccination schedule includes doses at birth, 6 weeks, 10 weeks, 14 weeks, and further as per government guidelines.",
-        },
-    ],
-    "Scheduling Appointment - General": [
-        {
-            question: "How do I schedule a vaccination appointment?",
-            answer:
-                "Appointments can be scheduled online through NHM portals or at your nearest health center.",
-        },
-    ],
-    Vaccination: [
-        {
-            question: "What vaccines are available for children under NHM?",
-            answer:
-                "Vaccines like BCG, OPV, Pentavalent, Measles, and others are provided free of cost.",
-        },
-    ],
-
-
+  All: [
+    {
+      question: "Where can my child be registered for child vaccination?",
+      answer: "You can register your child at local health centers, Anganwadi centers, or through the official NHM digital platform.",
+    },
+    {
+      question: "I am Pregnant woman, how can I register for receiving the Tetanus vaccine?",
+      answer: "Pregnant women can register at government health centers or via the NHM digital platform under maternal health programs.",
+    },
+    {
+      question: "Is there a mobile app that needs to be installed to register for vaccination?",
+      answer: "Yes, there are official apps like the CoWIN app where registration can be done easily.",
+    },
+  ],
+  Registration: [
+    {
+      question: "Where can my child be registered for child vaccination?",
+      answer: "You can register your child at local health centers, Anganwadi centers, or through the official NHM digital platform.",
+    },
+  ],
+  "Vaccination Schedule": [
+    {
+      question: "What is the recommended vaccination schedule for infants?",
+      answer: "The recommended vaccination schedule includes doses at birth, 6 weeks, 10 weeks, 14 weeks, and further as per government guidelines.",
+    },
+  ],
+  "Scheduling Appointment - General": [
+    {
+      question: "How do I schedule a vaccination appointment?",
+      answer: "Appointments can be scheduled online through NHM portals or at your nearest health center.",
+    },
+  ],
+  Vaccination: [
+    {
+      question: "What vaccines are available for children under NHM?",
+      answer: "Vaccines like BCG, OPV, Pentavalent, Measles, and others are provided free of cost.",
+    },
+  ],
 };
 
 const categories = Object.keys(faqData);
 
 const LandingPage = () => {
-    const [activeCategory, setActiveCategory] = useState("All");
-    const [openIndex, setOpenIndex] = useState(null);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [openIndex, setOpenIndex] = useState(null);
 
-    const toggleOpen = (index) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
+  const toggleOpen = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
-    return (
-        <div className="min-h-screen bg-blue-50 text-gray-800 font-sans">
-            {/* Header */}
-            <header className="bg-white shadow p-6 flex justify-between items-center sticky top-0 z-50">
-                <h1 className="text-3xl font-bold text-blue-700">Teeka Sarthi</h1>
-                <div>
-
-                    <Link
-                        to="/login"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-2 hover:bg-blue-700 transition"
-                    >
-                        Login
-                    </Link>
-                    <Link
-                        to="/register"
-                        className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
-                    >
-                        Register
-                    </Link>
-                </div>
-            </header>
-
-            {/* Hero Section */}
-        <section className="py-20 bg-white">
-  <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-    
-    {/* Left Content */}
-    <div className="w-full md:w-1/2 text-left mb-10 md:mb-0">
-      <h2 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-6">
-        Secure Every Child <br /> With Timely Vaccination
-      </h2>
-      <p className="text-lg text-gray-600 mb-6">
-        Track and manage child immunizations at Anganwadi centers with Teeka Sarthi —
-        making vaccination simple, timely, and effective.
-      </p>
-
-      <div className="flex items-center space-x-6">
-        <div className="flex items-center space-x-2">
-          <span className="text-yellow-500 text-xl">🛡️</span>
-          <span className="font-semibold text-blue-800">Best protection</span>
+  return (
+    <div className="min-h-screen  text-gray-800 font-sans">
+      {/* Header */}
+      <header className="bg-white shadow p-6 flex justify-between items-center sticky top-0 z-50">
+        <h1 className="text-3xl font-bold text-blue-700">Teeka Sarthi</h1>
+        <div>
+          <Link to="/workerlogin" className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-2 hover:bg-blue-700 transition">
+            Worker Login
+          </Link>
+          <Link to="/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-2 hover:bg-blue-700 transition">
+            Login
+          </Link>
+          <Link to="/register" className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+            Register
+          </Link>
         </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-yellow-500 text-xl">⭐</span>
-          <span className="font-semibold text-blue-800">Selected Vaccines</span>
-        </div>
-      </div>
-    </div>
+      </header>
 
-
-    {/* Right Image */}
-    <div className="w-full md:w-1/2 ">
-      <img
-  src="https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/AA0A/production/_131103534_54989d87ce8937557042dc64535ca31cc0924c8a.jpg"
-  alt="Doctor with vaccine"
-  className="w-full h-100 object-cover animate-fade-in-up"
-/>
-
-    </div>
-  </div>
-</section>
-
+      
+    <HeroSection />
 
 
             {/* Features Section */}
             <section className="py-16 px-4 bg-white">
                 <div className="max-w-6xl mx-auto text-center mb-12">
                     <h3 className="text-4xl font-bold text-blue-800 mb-4">Key Features</h3>
-                    <p className="text-gray-600 text-md">
+                    <p className="text-gray-900 text-lg">
                         Designed to simplify immunization tracking and session planning for
                         Anganwadi workers and administrators.
                     </p>
